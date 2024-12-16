@@ -1,5 +1,5 @@
-** Pipe Communication and Collatz Conjecture Program
-Overview **
+**Pipe Communication and Collatz Conjecture Program
+Overview**
 This program demonstrates inter-process communication (IPC) using pipes in a Linux/UNIX environment. It uses a parent-child process setup created via fork(). The program calculates the Collatz Conjecture (also known as the "3n + 1 problem") for a given positive integer input using two pipes to exchange data between the parent and child processes.
 
 Collatz Conjecture
