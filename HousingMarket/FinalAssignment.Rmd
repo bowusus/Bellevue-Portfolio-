@@ -1,0 +1,223 @@
+---
+title: "FinalDSC520"
+author: "Bernard Owusu Sefah"
+date: "2024-05-26"
+output: pdf_document
+---
+
+```{r}
+# Load required libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+library(caret)
+library(cluster)
+library(lubridate)
+
+# Read in the datasets
+housing_data <- read_csv("HousingData2.csv")
+income_data <- read_csv("kaggle_income2.csv")
+unrate_data <- read_csv("UNRATE.csv")
+demand_data <- read_csv("demand.csv")
+city_data <- read_csv("City_time_series1.csv")
+aspus_data <- read_csv("ASPUS.csv")
+
+# Prepare the housing data
+housing_data <- housing_data %>%
+  rename(
+    Median_Sale_Price = `Median Sale Price`,
+    Homes_Sold = `Homes Sold`,
+    Inventory = Inventory
+  ) %>%
+  mutate(Median_Sale_Price = as.numeric(gsub("[^0-9]", "", Median_Sale_Price)))
+
+# Prepare the income data
+income_data <- income_data %>%
+  mutate(
+    City = tolower(City),
+    Median_Income = as.numeric(gsub(",", "", Median)),
+    Mean_Income = as.numeric(gsub(",", "", Mean))
+  ) %>%
+  select(Median_Income, Mean_Income)
+
+# Prepare the city time series data
+city_data <- city_data %>%
+  mutate(Date = as.Date(Date, format = "%m/%d/%Y")) %>%
+  separate(RegionName, into = c("City", "State"), sep = ",\\s*") %>%
+  mutate(City = tolower(City)) %>%
+  select(ZHVI_TopTier)
+
+# Select required columns from each dataset
+aspus_data <- aspus_data %>%
+  select(ASPUS)
+
+demand_data <- demand_data %>%
+  select(CSUSHPISA, MORTGAGE30US, UMCSENT, INTDSRUSM193N, MSPUS, GDP)
+
+unrate_data <- unrate_data %>%
+  select(UNRATE)
+
+# Function to pad datasets to the required length
+pad_dataset <- function(dataset, target_length) {
+  pad_size <- target_length - nrow(dataset)
+  if (pad_size > 0) {
+    pad_df <- as.data.frame(matrix(NA, nrow = pad_size, ncol = ncol(dataset)))
+    colnames(pad_df) <- colnames(dataset)
+    padded_dataset <- bind_rows(dataset, pad_df)
+  } else {
+    padded_dataset <- dataset
+  }
+  return(padded_dataset)
+}
+
+# Determine the target length (the largest dataset length)
+target_length <- max(nrow(housing_data), nrow(income_data), nrow(unrate_data), nrow(demand_data), nrow(city_data), nrow(aspus_data))
+
+# Pad each dataset to the target length
+housing_data_padded <- pad_dataset(housing_data, target_length)
+income_data_padded <- pad_dataset(income_data, target_length)
+unrate_data_padded <- pad_dataset(unrate_data, target_length)
+demand_data_padded <- pad_dataset(demand_data, target_length)
+city_data_padded <- pad_dataset(city_data, target_length)
+aspus_data_padded <- pad_dataset(aspus_data, target_length)
+
+# Combine datasets by adding columns together
+combined_data <- bind_cols(
+  housing_data_padded %>% select(Date, Region, Median_Sale_Price, Homes_Sold, Inventory),
+  income_data_padded,
+  unrate_data_padded,
+  demand_data_padded,
+  city_data_padded,
+  aspus_data_padded
+)
+
+# Exploratory Data Analysis (EDA)
+summary(combined_data)
+str(combined_data)
+
+# Plotting correlations
+cor_matrix <- cor(combined_data %>% select(-Date, -Region), use = "complete.obs")
+corrplot(cor_matrix, method = "circle")
+
+# Scatter plots to visualize relationships
+ggplot(combined_data, aes(x = Median_Income, y = Median_Sale_Price)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", col = "red") +
+  ggtitle("Median Income vs Median Sale Price")
+
+ggplot(combined_data, aes(x = Mean_Income, y = Median_Sale_Price)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", col = "red") +
+  ggtitle("Mean Income vs Median Sale Price")
+
+# Bar plots to visualize regional differences
+ggplot(combined_data, aes(x = Region, y = Median_Sale_Price)) + 
+  geom_bar(stat = "identity", fill = "steelblue") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  ggtitle("Median Sale Price by Region")
+
+ggplot(combined_data, aes(x = Region, y = Median_Income)) + 
+  geom_bar(stat = "identity", fill = "steelblue") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  ggtitle("Median Income by Region")
+
+ggplot(combined_data, aes(x = Region, y = Homes_Sold)) + 
+  geom_bar(stat = "identity", fill = "steelblue") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  ggtitle("Homes Sold by Region")
+
+# Time series plots to visualize trends over time
+ggplot(combined_data, aes(x = Date, y = Median_Sale_Price)) + 
+  geom_line(color = "blue") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.2,size =5 )) +
+  ggtitle("Median Sale Price Over Time")
+
+ggplot(combined_data, aes(x = Date, y = Median_Income)) + 
+  geom_line(color = "green") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.2,size =5 )) +
+  ggtitle("Median Income Over Time")
+
+ggplot(combined_data, aes(x = Date, y = Homes_Sold)) + 
+  geom_line(color = "red") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.2,size =5 )) +
+  ggtitle("Homes Sold Over Time")
+
+# Modeling
+# Prepare the data for modeling
+model_data <- combined_data %>%
+  select(Median_Sale_Price, Median_Income, Mean_Income, UNRATE, CSUSHPISA, MORTGAGE30US, UMCSENT, INTDSRUSM193N, MSPUS, GDP, ZHVI_TopTier, ASPUS) %>%
+  drop_na()
+
+# Split data into training and testing sets
+set.seed(123)
+trainIndex <- createDataPartition(model_data$Median_Sale_Price, p = 0.8, list = FALSE)
+train_data <- model_data[trainIndex, ]
+test_data <- model_data[-trainIndex, ]
+
+# Linear regression model
+lm_model <- lm(Median_Sale_Price ~ ., data = train_data)
+summary(lm_model)
+
+# Predict on the test set
+predictions <- predict(lm_model, test_data)
+# Calculate RMSE
+rmse <- sqrt(mean((predictions - test_data$Median_Sale_Price)^2))
+print(paste("RMSE:", rmse))
+
+# Plotting actual vs predicted values
+ggplot(data = test_data, aes(x = Median_Sale_Price, y = predictions)) + 
+  geom_point() + 
+  geom_abline(slope = 1, intercept = 0, col = "red") +
+  ggtitle("Actual vs Predicted Median Sale Price")
+
+# Clustering analysis
+set.seed(123)
+kmeans_model <- kmeans(model_data %>% select(-Median_Sale_Price), centers = 3)
+model_data$cluster <- as.factor(kmeans_model$cluster)
+
+# Visualize clusters
+ggplot(model_data, aes(x = Median_Income, y = Median_Sale_Price, color = cluster)) + 
+  geom_point() + 
+  ggtitle("Clusters of Median Sale Price based on Income")
+
+
+```
+##
+
+## Analysis on Linear Regression Model and RMSE
+The linear regression model aims to predict the median sale price of homes using various predictor variables.
+
+Residuals:
+
+Min: -20.4454
+1Q (First Quartile): -4.2797
+Median: 0.1592
+3Q (Third Quartile): 4.0031
+Max: 15.5483
+These values summarize the distribution of the residuals (differences between the observed and predicted values). Ideally, the residuals should be normally distributed around zero.
+
+Coefficients:
+Each row corresponds to a predictor variable in the model, showing its estimated effect on the median sale price. Here are the key columns:
+
+Estimate: The estimated effect of the predictor variable on the median sale price.
+Std. Error: The standard error of the estimate, measuring its precision.
+t value: The t-statistic for the hypothesis test that the coefficient is different from zero.
+Pr(>|t|): The p-value for the hypothesis test. A small p-value (typically < 0.05) indicates that the predictor variable is statistically significant.
+Key findings:
+
+Intercept: The baseline median sale price when all predictors are zero is approximately 568.6.
+Significant Predictors: CSUSHPISA (Consumer Price Index for Urban Consumers), MSPUS (Monthly Supply of Houses in the U.S.), and GDP (Gross Domestic Product) are statistically significant predictors of median sale price. Their p-values are less than 0.05, indicating a significant relationship with the median sale price.
+
+
+## Root Mean Squared Error (RMSE)
+RMSE Calculation:
+The RMSE is calculated using the predictions from the linear regression model on the test dataset. It measures the average magnitude of the prediction errors, giving an idea of how well the model performs on new data.
+
+Predictions: The predicted median sale prices using the test data.
+Observed Values: The actual median sale prices in the test data.
+
+The RMSE value is 9.50208637404978. This means that, on average, the predicted median sale prices differ from the actual values by approximately 9.5 units. The lower the RMSE, the better the model's performance.
+
+The linear regression model explains a significant portion of the variance in housing prices, with an R-squared value of 0.9818. Key predictors like CSUSHPISA, MSPUS, and GDP significantly influence housing prices. The RMSE of 9.5 indicates that the model's predictions are reasonably close to the actual values, demonstrating its effectiveness in predicting median sale prices. However, there is room for improvement, possibly by incorporating additional data sources or using more complex modeling techniques.
