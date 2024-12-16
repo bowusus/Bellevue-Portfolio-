@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DBAB60BC-4BA2-4D91-B4DB-F2F9A7544B0A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Air3550</RootNamespace>
+    <AssemblyName>Air3550</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountInformationPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccountInformationPage.Designer.cs">
+      <DependentUpon>AccountInformationPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BookFlightPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BookFlightPage.Designer.cs">
+      <DependentUpon>BookFlightPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlightManifest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FlightManifest.Designer.cs">
+      <DependentUpon>FlightManifest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadEngineerAddFlightPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadEngineerAddFlightPage.Designer.cs">
+      <DependentUpon>LoadEngineerAddFlightPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadEngineerEditFlightPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadEngineerEditFlightPage.Designer.cs">
+      <DependentUpon>LoadEngineerEditFlightPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadEngineerLoadingPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadEngineerLoadingPage.Designer.cs">
+      <DependentUpon>LoadEngineerLoadingPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadEngineerRoutesPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadEngineerRoutesPage.Designer.cs">
+      <DependentUpon>LoadEngineerRoutesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarketingManagerEditPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MarketingManagerEditPage.Designer.cs">
+      <DependentUpon>MarketingManagerEditPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaymentPage.Designer.cs">
+      <DependentUpon>PaymentPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlightManagerHomePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FlightManagerHomePage.Designer.cs">
+      <DependentUpon>FlightManagerHomePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateCustomerPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateCustomerPage.Designer.cs">
+      <DependentUpon>CreateCustomerPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountingManagerHomePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccountingManagerHomePage.Designer.cs">
+      <DependentUpon>AccountingManagerHomePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CancelFlightPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CancelFlightPage.Designer.cs">
+      <DependentUpon>CancelFlightPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccountHistoryPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AccountHistoryPage.Designer.cs">
+      <DependentUpon>AccountHistoryPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrintBoardingPassPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PrintBoardingPassPage.Designer.cs">
+      <DependentUpon>PrintBoardingPassPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarketingManagerHomePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MarketingManagerHomePage.Designer.cs">
+      <DependentUpon>MarketingManagerHomePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoadEngineerHomePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadEngineerHomePage.Designer.cs">
+      <DependentUpon>LoadEngineerHomePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogInPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogInPage.Designer.cs">
+      <DependentUpon>LogInPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerHomePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomerHomePage.Designer.cs">
+      <DependentUpon>CustomerHomePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AccountInformationPage.resx">
+      <DependentUpon>AccountInformationPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BookFlightPage.resx">
+      <DependentUpon>BookFlightPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlightManifest.resx">
+      <DependentUpon>FlightManifest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadEngineerAddFlightPage.resx">
+      <DependentUpon>LoadEngineerAddFlightPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadEngineerEditFlightPage.resx">
+      <DependentUpon>LoadEngineerEditFlightPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadEngineerLoadingPage.resx">
+      <DependentUpon>LoadEngineerLoadingPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadEngineerRoutesPage.resx">
+      <DependentUpon>LoadEngineerRoutesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MarketingManagerEditPage.resx">
+      <DependentUpon>MarketingManagerEditPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaymentPage.resx">
+      <DependentUpon>PaymentPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlightManagerHomePage.resx">
+      <DependentUpon>FlightManagerHomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateCustomerPage.resx">
+      <DependentUpon>CreateCustomerPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountingManagerHomePage.resx">
+      <DependentUpon>AccountingManagerHomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CancelFlightPage.resx">
+      <DependentUpon>CancelFlightPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AccountHistoryPage.resx">
+      <DependentUpon>AccountHistoryPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintBoardingPassPage.resx">
+      <DependentUpon>PrintBoardingPassPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MarketingManagerHomePage.resx">
+      <DependentUpon>MarketingManagerHomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadEngineerHomePage.resx">
+      <DependentUpon>LoadEngineerHomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogInPage.resx">
+      <DependentUpon>LogInPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomerHomePage.resx">
+      <DependentUpon>CustomerHomePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Content Include="Air3550.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\ClassLibrary.Path.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj">
+      <Project>{f314bd68-583e-478f-af69-67461ff9512c}</Project>
+      <Name>ClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
+if exist "$(TargetPath)" if not exist "$(TargetPath).locked" move "$(TargetPath)" "$(TargetPath).locked"</PreBuildEvent>
+  </PropertyGroup>
+</Project>
