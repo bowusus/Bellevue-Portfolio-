@@ -1,6 +1,5 @@
 # Project Title: Meteorite Landings Data Cleaning and Scraping
 ## Author: Bernard Owusu Sefah
-## Course: DSC540
 ## Overview:
 This project focuses on cleaning meteorite landings datasets, handling missing values, and removing inconsistencies. It further involves web scraping of population data to provide accurate and usable insights for analysis.
 
