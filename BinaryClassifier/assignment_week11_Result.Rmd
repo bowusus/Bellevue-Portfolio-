@@ -1,0 +1,110 @@
+---
+title: "Week 11"
+author: "Bernard Owusu Sefah"
+date: "2024-05-25"
+output: pdf_document
+---
+
+```{r}
+# Load required libraries
+library(ggplot2)
+
+# Exercise 1: Introduction to Machine Learning
+
+# Read in binary and trinary classifier datasets
+binary_data <- read.csv("binary-classifier-data.csv")
+trinary_data <- read.csv("trinary-classifier-data.csv")
+
+# Create scatter plots colored by label
+ggplot(binary_data, aes(x=x, y=y, color=as.factor(label))) + geom_point()
+ggplot(trinary_data, aes(x=x, y=y, color=as.factor(label))) + geom_point()
+
+# Function to calculate Euclidean distance 
+euclidean_dist <- function(x1, x2) {
+  sqrt(sum((x1 - x2)^2))
+}
+
+# Function to fit KNN model
+fit_knn <- function(data, k) {
+  
+  predictions <- rep(0, nrow(data))
+  
+  for (i in 1:nrow(data)) {
+    
+    dists <- apply(data[,2:3], 1, function(x) euclidean_dist(x, data[i,2:3]))
+    
+    nearest <- order(dists)[1:k]
+    
+    predictions[i] <- names(which.max(table(data$label[nearest])))
+  }
+  
+  accuracy <- mean(predictions == data$label)
+  
+  return(accuracy)
+}
+
+# Fit KNN models and store accuracies
+k_values <- c(3, 5, 10, 15, 20, 25)
+binary_accuracies <- sapply(k_values, function(k) fit_knn(binary_data, k))
+trinary_accuracies <- sapply(k_values, function(k) fit_knn(trinary_data, k))
+
+# Plot accuracy vs k
+plot(k_values, binary_accuracies, type="b", ylim=c(0,1), 
+     xlab="k", ylab="Accuracy", main="KNN Accuracy vs k (Binary)")
+
+plot(k_values, trinary_accuracies, type="b", ylim=c(0,1),
+     xlab="k", ylab="Accuracy", main="KNN Accuracy vs k (Trinary)")
+
+
+# Exercise 2: Clustering
+
+# Read in clustering dataset 
+cluster_data <- read.csv("clustering-data.csv")
+
+# Scatter plot of data
+ggplot(cluster_data, aes(x=x, y=y)) + geom_point()
+
+# Function to plot clusters
+plot_clusters <- function(data, centers, assignments) {
+  
+  data$cluster <- as.factor(assignments)
+  centers$cluster <- as.factor(1:nrow(centers))
+  
+  ggplot(data, aes(x=x, y=y, color=cluster)) + 
+    geom_point() +
+    geom_point(data=centers, size=5, shape="x")
+}
+
+# Fit k-means models and plot clusters
+for (k in 2:12) {
+  
+  km <- kmeans(cluster_data[,1:2], centers=k)
+  
+  plot_clusters(cluster_data, km$centers, km$cluster)
+  
+  # Calculate average distance to cluster centers
+  avg_dist <- mean(sapply(1:nrow(cluster_data), function(i) 
+    euclidean_dist(cluster_data[i,1:2], km$centers[km$cluster[i],])))
+  
+  cat("k=", k, "  Average Distance=", avg_dist, "\n")
+}
+
+# Plot average distance vs k
+avg_dists <- sapply(2:12, function(k) {
+  km <- kmeans(cluster_data[,1:2], centers=k)  
+  mean(sapply(1:nrow(cluster_data), function(i) 
+    euclidean_dist(cluster_data[i,1:2], km$centers[km$cluster[i],])))
+})
+
+plot(2:12, avg_dists, type="b",
+     xlab="Number of Clusters (k)", ylab="Average Distance to Center")
+
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
