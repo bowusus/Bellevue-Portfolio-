@@ -90,7 +90,7 @@ Confusion Matrices: Performance summaries for all models.
 
 Clone the repository.
 
-git clone https://github.com/bowusus/Telecom-Churn-Prediction.git
+git clone [https://github.com/bowusus/Telecom-Churn-Prediction.git](https://github.com/bowusus/Bellevue-Portfolio-/tree/main/Predicting%20Churn)
 
 Navigate to the project directory.
 
